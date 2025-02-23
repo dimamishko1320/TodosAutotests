@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    image: todo-app
+    container_name: todo-container
+    ports:
+      - "8080:4242"
+    environment:
+      - VERBOSE=1
+    restart: always
