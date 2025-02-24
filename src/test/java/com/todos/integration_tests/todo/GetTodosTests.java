@@ -3,7 +3,6 @@ package com.todos.integration_tests.todo;
 import com.todos.integration_tests.BaseTest;
 import com.todos.integration_tests.client.TodoClient;
 import com.todos.integration_tests.client.dao.request.GetTodoRequest;
-
 import com.todos.integration_tests.client.dao.response.GetTodoResponse;
 import com.todos.integration_tests.dataService.entity.Todo;
 import com.todos.integration_tests.dataService.service.TodoService;
@@ -102,10 +101,10 @@ class GetTodosTests extends BaseTest {
     }
 
     /*todo Дописать АТ
-    * 1)Передан некорректный limit(отрицательный)
-    * 2)В БД 3 записи. Передан offset = 2. Проверка, что нам вернется 3 и 1 запись(видимо они должны возвращаться
-    * отсортированные, т.к. не понятно, как offset работает)
-    * 3)В БД 1 запись. Передан limit = 0. Проверка, что нам вернулось 0 записей.
-    * 4)В БД 3 записи. Передан limit = 1. Проверка того, что нам вернулось 2 записи.
+     * 1)Передан некорректный limit(отрицательный)
+     * 2)В БД 3 записи. Передан offset = 2. Проверка, что нам вернется 3 и 1 запись(видимо они должны возвращаться
+     * отсортированные, т.к. не понятно, как offset работает)
+     * 3)В БД 1 запись. Передан limit = 0. Проверка, что нам вернулось 0 записей.
+     * 4)В БД 3 записи. Передан limit = 1. Проверка того, что нам вернулось 2 записи.
      */
 }

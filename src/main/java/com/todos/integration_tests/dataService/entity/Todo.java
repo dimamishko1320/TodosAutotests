@@ -9,6 +9,7 @@ import static com.todos.integration_tests.utils.GenerateUtils.generateSentence;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Builder
 public class Todo {
     @Builder.Default

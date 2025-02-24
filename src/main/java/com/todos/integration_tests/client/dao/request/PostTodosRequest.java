@@ -6,8 +6,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 
-import static com.todos.integration_tests.utils.GenerateUtils.generateId;
-import static com.todos.integration_tests.utils.GenerateUtils.generateSentence;
+import static com.todos.integration_tests.utils.GenerateUtils.*;
 import static com.todos.integration_tests.utils.JsonUtils.stringFromJsonObject;
 
 @Getter
@@ -18,9 +17,9 @@ public class PostTodosRequest {
     @Builder.Default
     private String text = generateSentence();
     @Builder.Default
-    private boolean completed = false;
+    private Boolean completed = generateRandomBoolean();
 
-    public String createBody(){
+    public String createBody() {
         HashMap<String, Object> body = new HashMap<>();
         body.put("id", id);
         body.put("text", text);

@@ -1,6 +1,5 @@
 package com.todos.integration_tests.client.dao.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.todos.integration_tests.dataService.entity.Todo;
 import lombok.*;
 

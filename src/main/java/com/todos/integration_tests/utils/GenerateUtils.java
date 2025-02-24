@@ -1,7 +1,6 @@
 package com.todos.integration_tests.utils;
 
 import org.instancio.Gen;
-import org.instancio.Instancio;
 
 public class GenerateUtils {
     public static Long generateId() {
@@ -10,6 +9,14 @@ public class GenerateUtils {
 
     public static Integer generateNegativeInt() {
         return Gen.ints().range(-10000, -1).get();
+    }
+
+    public static Long generateNegativeLong() {
+        return Gen.longs().range(-10000L, -1L).get();
+    }
+
+    public static Boolean generateRandomBoolean() {
+        return Gen.booleans().get();
     }
 
     public static String generateSentence() {
