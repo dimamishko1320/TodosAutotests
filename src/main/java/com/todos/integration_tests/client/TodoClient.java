@@ -3,6 +3,7 @@ package com.todos.integration_tests.client;
 import com.todos.integration_tests.client.dao.request.DeleteTodoRequest;
 import com.todos.integration_tests.client.dao.request.GetTodoRequest;
 import com.todos.integration_tests.client.dao.request.PostTodosRequest;
+import com.todos.integration_tests.client.dao.request.PutTodosRequest;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,15 @@ public class TodoClient extends BaseClient {
                 .body(postTodosRequest.createBody())
                 .when()
                 .post(appProperties.getTodoUrl() + "/todos");
+    }
+
+    @Step("Send request PUT /todos/:id")
+    public Response sendPutTodosRequest(PutTodosRequest putTodosRequest) {
+        return getRequestSpecification()
+                .header("Authorization", "Basic " + putTodosRequest.getCredentials())
+                .body(putTodosRequest.createBody())
+                .when()
+                .put(appProperties.getTodoUrl() + "/todos/" + putTodosRequest.getId());
     }
 
     @Step("Send request DELETE /todo/:id")

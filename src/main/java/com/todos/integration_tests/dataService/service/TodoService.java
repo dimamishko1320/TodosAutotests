@@ -46,6 +46,22 @@ public class TodoService {
         return new Todo(getTodoResponse.getId(), getTodoResponse.getText(), getTodoResponse.isCompleted());
     }
 
+    @Step("Get all todos from DB")
+    public List<Todo> getAllTodos() {
+        return todoClient.sendGetTodoRequest(GetTodoRequest.builder()
+                        .limit(100)
+                        .offset(0)
+                        .build())
+                .then()
+                .extract()
+                .body()
+                .jsonPath()
+                .getList(".", GetTodoResponse.class)
+                .stream()
+                .map(getTodoResponse -> new Todo(getTodoResponse.getId(), getTodoResponse.getText(), getTodoResponse.isCompleted()))
+                .toList();
+    }
+
     @Step("Delete todo from DB")
     public void deleteTodoById(Long id) {
         todoClient.sendDeleteTodoRequest(DeleteTodoRequest.builder()
@@ -55,17 +71,7 @@ public class TodoService {
 
     @Step("Delete all todos from DB")
     public void deleteAllTodos() {
-        List<Long> ids = todoClient.sendGetTodoRequest(GetTodoRequest.builder()
-                        .limit(1000)
-                        .build())
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id")
-                .stream()
-                .map(v -> Long.valueOf((int) v))
-                .collect(Collectors.toList());
-        for (Long id : ids) {
+        for (Long id : getAllTodos().stream().map(Todo::getId).toList()) {
             todoClient.sendDeleteTodoRequest(DeleteTodoRequest.builder()
                     .id(id)
                     .build());
