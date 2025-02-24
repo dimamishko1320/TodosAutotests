@@ -7,6 +7,7 @@ import com.todos.integration_tests.dataService.entity.Todo;
 import com.todos.integration_tests.dataService.service.TodoService;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,12 @@ class PostTodosTests extends BaseTest {
     private TodoService todoService;
 
     @BeforeEach
+    @Step("Prepare DB")
     public void clearDb() {
         todoService.deleteAllTodos();
     }
 
-    @Description("Не передан обязательный параметр id")
+    @Description("Required id parameter not provided")
     @Test
     void postTodos_withoutId() {
         todoClient.sendPostTodosRequest(PostTodosRequest.builder()
@@ -39,7 +41,7 @@ class PostTodosTests extends BaseTest {
                 .body(containsString("Request body deserialize error: missing field `id`"));
     }
 
-    @Description("Не передан обязательный параметр id")
+    @Description("Required text parameter not provided")
     @Test
     void postTodos_withoutText() {
         todoClient.sendPostTodosRequest(PostTodosRequest.builder()
@@ -50,7 +52,7 @@ class PostTodosTests extends BaseTest {
                 .body(containsString("Request body deserialize error: missing field `text`"));
     }
 
-    @Description("Передан отрицательный id")
+    @Description("Negative id provided")
     @Test
     void getTodos_withoutOffset() {
         todoClient.sendPostTodosRequest(PostTodosRequest.builder()
@@ -58,10 +60,10 @@ class PostTodosTests extends BaseTest {
                         .build())
                 .then()
                 .statusCode(400)
-                .body(equalTo("Invalid query string"));
+                .body(containsString("Request body deserialize error: invalid value: integer"));
     }
 
-    @Description("В БД уже есть запись с данным id")
+    @Description("Record with the same id already exists in the DB")
     @Test
     void getTodos_recordWithSameIdAlreadyExist() {
         Todo todo = todoService.saveTodo(Todo.builder().build());
@@ -73,7 +75,7 @@ class PostTodosTests extends BaseTest {
                 .body(equalTo(""));
     }
 
-    @Description("Успешное создание записи в бд")
+    @Description("Successful creation of a record in the DB")
     @Test
     void getTodos_successRecordCreate() {
         PostTodosRequest postTodosRequest = PostTodosRequest.builder()
@@ -91,9 +93,9 @@ class PostTodosTests extends BaseTest {
                 ));
     }
 
-    /*todo Дописать АТ
-     * 1)Не передан обязательный параметр completed
-     * 2)Создание TODO с пустым text
-     * 3)Создание TODO с text, содержащим 1000+ символов
+    /*todo Add additional tests
+     * 1) Required completed parameter not provided
+     * 2) Creating a TODO with an empty text field
+     * 3) Creating a TODO with text containing 1000+ characters
      */
 }

@@ -4,3 +4,4 @@ target/
 .gitattributes
 .idea
 integration-tests.iml
+.mvn

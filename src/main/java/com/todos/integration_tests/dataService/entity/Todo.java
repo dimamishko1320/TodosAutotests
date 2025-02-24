@@ -10,6 +10,7 @@ import static com.todos.integration_tests.utils.GenerateUtils.generateSentence;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Builder
 public class Todo {
     @Builder.Default

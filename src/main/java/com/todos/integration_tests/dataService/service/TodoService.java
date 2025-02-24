@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.todos.integration_tests.utils.AllureUtils.addAttachmentEntity;
+import static com.todos.integration_tests.utils.AllureUtils.nullAttachment;
 
 @Service
 public class TodoService {
@@ -25,7 +27,7 @@ public class TodoService {
                 .text(todo.getText())
                 .completed(todo.getCompleted())
                 .build());
-        return todo;
+        return (Todo) addAttachmentEntity(todo);
     }
 
     @Step("Delete todo from DB")
@@ -43,12 +45,12 @@ public class TodoService {
                 .filter(todo -> todo.getId().equals(id))
                 .findFirst()
                 .orElse(null);
-        return new Todo(getTodoResponse.getId(), getTodoResponse.getText(), getTodoResponse.isCompleted());
+        return getTodoResponse == null ? (Todo) nullAttachment() : (Todo) addAttachmentEntity(new Todo(getTodoResponse.getId(), getTodoResponse.getText(), getTodoResponse.isCompleted()));
     }
 
     @Step("Get all todos from DB")
     public List<Todo> getAllTodos() {
-        return todoClient.sendGetTodoRequest(GetTodoRequest.builder()
+        return (List<Todo>) addAttachmentEntity(todoClient.sendGetTodoRequest(GetTodoRequest.builder()
                         .limit(100)
                         .offset(0)
                         .build())
@@ -59,7 +61,7 @@ public class TodoService {
                 .getList(".", GetTodoResponse.class)
                 .stream()
                 .map(getTodoResponse -> new Todo(getTodoResponse.getId(), getTodoResponse.getText(), getTodoResponse.isCompleted()))
-                .toList();
+                .toList());
     }
 
     @Step("Delete todo from DB")

@@ -8,6 +8,7 @@ import com.todos.integration_tests.dataService.entity.Todo;
 import com.todos.integration_tests.dataService.service.TodoService;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,12 @@ class GetTodosTests extends BaseTest {
     private TodoService todoService;
 
     @BeforeEach
+    @Step("Prepare DB")
     public void clearDb() {
         todoService.deleteAllTodos();
     }
 
-    @Description("Не передан обязательный параметр offset")
+    @Description("Required offset parameter not provided")
     @Test
     void getTodos_withoutOffset() {
         todoClient.sendGetTodoRequest(GetTodoRequest.builder()
@@ -41,7 +43,7 @@ class GetTodosTests extends BaseTest {
                 .body(equalTo("Invalid query string"));
     }
 
-    @Description("Передан некорректный offset")
+    @Description("Incorrect offset provided")
     @Test
     void getTodos_incorrectOffset() {
         todoClient.sendGetTodoRequest(GetTodoRequest.builder()
@@ -52,7 +54,7 @@ class GetTodosTests extends BaseTest {
                 .body(equalTo("Invalid query string"));
     }
 
-    @Description("Не передан обязательный параметр limit")
+    @Description("Required limit parameter not provided")
     @Test
     void getTodos_withoutLimit() {
         todoClient.sendGetTodoRequest(GetTodoRequest.builder()
@@ -63,7 +65,7 @@ class GetTodosTests extends BaseTest {
                 .body(equalTo("Invalid query string"));
     }
 
-    @Description("В таблице todo нет записей")
+    @Description("No records in the todo table")
     @Test
     void getTodos_withoutRecordInTodo() {
         List<GetTodoResponse> todoResponses = todoClient.sendGetTodoRequest(GetTodoRequest.builder().build())
@@ -78,7 +80,7 @@ class GetTodosTests extends BaseTest {
                 .isEmpty();
     }
 
-    @Description("В таблице todo 2 записи")
+    @Description("2 records in the todo table")
     @Test
     void getTodos_twoRecordInDb() {
         Todo todoFirst = todoService.saveTodo(Todo.builder().build());
@@ -100,11 +102,11 @@ class GetTodosTests extends BaseTest {
                 );
     }
 
-    /*todo Дописать АТ
-     * 1)Передан некорректный limit(отрицательный)
-     * 2)В БД 3 записи. Передан offset = 2. Проверка, что нам вернется 3 и 1 запись(видимо они должны возвращаться
-     * отсортированные, т.к. не понятно, как offset работает)
-     * 3)В БД 1 запись. Передан limit = 0. Проверка, что нам вернулось 0 записей.
-     * 4)В БД 3 записи. Передан limit = 1. Проверка того, что нам вернулось 2 записи.
+    /*todo Add additional tests
+     * 1) Incorrect limit provided (negative value)
+     * 2) 3 records in DB. Provided offset = 2. Verify that records 3 and 1 are returned (they should be sorted,
+     * since it is unclear how offset works)
+     * 3) 1 record in DB. Provided limit = 0. Verify that 0 records are returned.
+     * 4) 3 records in DB. Provided limit = 1. Verify that 2 records are returned.
      */
 }

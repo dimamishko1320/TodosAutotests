@@ -7,6 +7,7 @@ import com.todos.integration_tests.dataService.entity.Todo;
 import com.todos.integration_tests.dataService.service.TodoService;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +16,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 @Feature("Update an existing TODO with the provided one PUT /todos/:id")
-public class PutTodosTests extends BaseTest {
+class PutTodosTests extends BaseTest {
     @Autowired
     private TodoClient todoClient;
     @Autowired
     private TodoService todoService;
 
     @BeforeEach
+    @Step("Prepare DB")
     public void clearDb() {
         todoService.deleteAllTodos();
     }
 
-    @Description("Не передан обязательный параметр id")
+    @Description("Required id parameter not provided")
     @Test
     void putTodos_withoutId() {
         todoClient.sendPutTodosRequest(PutTodosRequest.builder()
@@ -37,7 +39,7 @@ public class PutTodosTests extends BaseTest {
                 .body(containsString(""));
     }
 
-    @Description("Не передан обязательный параметр text")
+    @Description("Required text parameter not provided")
     @Test
     void putTodos_withoutText() {
         todoClient.sendPutTodosRequest(PutTodosRequest.builder()
@@ -48,7 +50,7 @@ public class PutTodosTests extends BaseTest {
                 .body(containsString("Request body deserialize error: missing field `text`"));
     }
 
-    @Description("Не передан обязательный параметр completed")
+    @Description("Required completed parameter not provided")
     @Test
     void putTodos_withoutCompleted() {
         todoClient.sendPutTodosRequest(PutTodosRequest.builder()
@@ -56,10 +58,10 @@ public class PutTodosTests extends BaseTest {
                         .build())
                 .then()
                 .statusCode(400)
-                .body(containsString("Request body deserialize error: missing field `text`"));
+                .body(containsString("Request body deserialize error: missing field `completed`"));
     }
 
-    @Description("В бд есть запись 1 запись для данного id.")
+    @Description("Record for the given id exists in the DB.")
     @Test
     void putTodos_recordInDbExist() {
         Todo todo = todoService.saveTodo(Todo.builder().build());
@@ -80,7 +82,7 @@ public class PutTodosTests extends BaseTest {
                 ));
     }
 
-    @Description("В бд отсутствует запись для данного id")
+    @Description("Record for the given id does not exist in the DB")
     @Test
     void putTodos_recordInDbExistForThisId() {
         Todo todo = todoService.saveTodo(Todo.builder().build());
@@ -96,10 +98,10 @@ public class PutTodosTests extends BaseTest {
                 .contains(todo);
     }
 
-    /*todo Дописать АТ
-     * 1)Обновление TODO пустым text
-     * 2)Обновление TODO text, содержащим 1000+ символов
-     * 3)Не передан Authorization в хедере
-     * 4)Передана некорректная Authorization в хедере
+    /*todo Add additional tests
+     * 1) Updating TODO with an empty text field
+     * 2) Updating TODO with text containing 1000+ characters
+     * 3) Authorization header not provided
+     * 4) Invalid Authorization header provided
      */
 }

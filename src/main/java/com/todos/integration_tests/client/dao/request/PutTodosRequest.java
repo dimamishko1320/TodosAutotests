@@ -3,6 +3,7 @@ package com.todos.integration_tests.client.dao.request;
 import io.qameta.allure.internal.shadowed.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import static com.todos.integration_tests.utils.JsonUtils.stringFromJsonObject;
 
 @Getter
 @Builder
+@ToString
 public class PutTodosRequest {
     @Builder.Default
     private Long id = generateId();
