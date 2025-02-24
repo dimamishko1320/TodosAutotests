@@ -10,7 +10,10 @@ import io.restassured.specification.RequestSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Base client for API requests.
+ * Configures request specifications, including logging and Allure reporting.
+ */
 @Service
 public class BaseClient {
     @Autowired

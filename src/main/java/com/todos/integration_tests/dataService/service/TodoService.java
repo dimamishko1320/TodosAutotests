@@ -15,6 +15,11 @@ import java.util.List;
 import static com.todos.integration_tests.utils.AllureUtils.addAttachmentEntity;
 import static com.todos.integration_tests.utils.AllureUtils.nullAttachment;
 
+/**
+ * Service class for managing TODO entities.
+ * Provides methods to save, retrieve, and delete TODOs via API requests.
+ * Since data is stored locally, this service acts as a database interaction layer.
+ */
 @Service
 public class TodoService {
     @Autowired

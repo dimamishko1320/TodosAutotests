@@ -8,8 +8,13 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Service;
 
+/**
+ * Client for interacting with the TODO API.
+ * Provides methods for CRUD operations on tasks.
+ */
 @Service
 public class TodoClient extends BaseClient {
+
 
     @Step("Send request GET /todos")
     public Response sendGetTodoRequest(GetTodoRequest getTodoRequest) {
